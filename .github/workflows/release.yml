@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4  # Use the latest version of the setup-go action
         with:
-          go-version: '1.16'  # Set the Go version as needed
+          go-version: '1.22'  # Set the Go version to 1.22
 
       - name: Install dependencies
         run: go mod tidy
@@ -28,4 +28,4 @@ jobs:
       - name: Run GoReleaser
         run: goreleaser release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # This is automatically provided by GitHub Actions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the automatically provided GitHub token
