@@ -19,6 +19,7 @@ var verifyCmd = &cobra.Command{
 	Use:   "verify <export/export-diff> <dc_log_file> <dr_log_file> <pool_name> <image_name>",
 	Short: "Compares hashes from DC and DR log files",
 	Long:  `This command compares the hashes saved in the DC and DR log files to verify data integrity.`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 5 {
 			log.Fatalf("usage: %s verify <export/export-diff> <dc_log_file> <dr_log_file> <pool_name> <image_name>", os.Args[0])

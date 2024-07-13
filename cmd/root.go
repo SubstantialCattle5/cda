@@ -10,7 +10,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "cephdrillautomation",
+	Use:   "cda",
 	Short: "Automates the process of image drilling in snapshot transfer from DataCenter(DC) to DataRecovery(DR).",
 	Long: `cephdrillautomation is a CLI library for Ceph that automate the process of snapshot transfer from DC to DR.
 This application is a tool to generate the snaps.`,
