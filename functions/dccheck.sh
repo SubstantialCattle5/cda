@@ -21,7 +21,8 @@ calculate_splits() {
     local imagename="$2"
 
     # Fetch the size from rbd info
-    size=10
+    size=$(rbd snap ls "$1"/"$2" | grep -oP '\d+\s+[\w.]+\s+\K\d+\s+\w+' | awk '{print $1}')
+
     if [[ -z "$size" ]]; then
         echo "Error: Could not determine size of the image. Exiting."
         exit 1
@@ -49,10 +50,12 @@ export_and_checksums() {
     local imagename="$3"
     local splitsize=$(calculate_splits "$poolname" "$imagename")
 
+    echo "Running ${operation} and checksums for ${poolname}/${imagename}..."
+    echo "Splitting the Image based on ${splitsize}G....."
     # Export RBD image, split into chunks, and hash each chunk
-    snapshot_file="./GD.iso"
-    split -b ${splitsize}G "${snapshot_file}" --filter='sha256sum' | (
+    rbd ${operation} "${poolname}/${imagename}" - | split -b ${splitsize}G - --filter='sha256sum' | (
         while read -r hash filename; do
+            echo "$hash"
             chunk_hashes+=("$hash")
         done
     )
@@ -69,8 +72,8 @@ poolname="$2"
 imagename="$3"
 
 # Check for rbd installation
+check_rbd_command
 
 # # Run the export and calculate checksums
-
 export_and_checksums "$operation" "$poolname" "$imagename"
 calculate_combined_checksum
